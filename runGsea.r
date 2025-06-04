@@ -5,6 +5,7 @@ library("ggpubr")
 
 #cfiles = list.files(path="gseaClusters_all", full=T)
 cfiles = list.files(path="gseaClusters_cd452", full=T)
+cfiles = list.files(path="/home/kpradhan/Desktop/projects/divij/cc1339/de_cd452neg/gsea", full=T)
 f = cfiles[1]
 x = read.csv(f)
 
@@ -22,7 +23,7 @@ mouse.genes = m2h[x[,1]]
 
 
 gmt.files = list.files(path="/home/kpradhan/Desktop/projects/mdsigdb/", full=T)
-
+gmt.files = gmt.files[-10]
 gmt.names = gsub(gsub(gmt.files, pat=".*\\/\\/", rep=""), pat=".symbols.gmt", rep="")
 gmt.pathways = lapply(gmt.files, gmtPathways)
 
@@ -114,7 +115,7 @@ for (de.file in cfiles){
         print(de.file)
         print(pname)
         
-        outfile = paste0("gsea_cd452/gsea_", pname, "_", celltype, ".txt")
+        outfile = paste0("de_cd452neg/gsea/gsea_", pname, "_", celltype, ".txt")
 
         
         res = makeGseaTable(glist, paths, .05)
@@ -187,5 +188,38 @@ res = makeGseaTable(glist, paths, .05)
 
 
 
+#make plots for gsea results
+#Can you please generate the graph depicting the GSEA in the following files: “gsea_c6.all.v7.4_HSPC” “gsea_h.all.v7.4_HSPC”
+#I'm guessing these are the cd45neg results
+x.c6 = read.csv("de_cd452neg/gsea/gsea_c6.all.v7.4_HSPC.txt", sep="\t")
+x.h = read.csv("de_cd452neg/gsea/gsea_h.all.v7.4_HSPC.txt", sep="\t")
 
+x.c6$pathway = factor(x.c6$pathway, levels=x.c6[order(x.c6$NES), "pathway"])
+x.h$pathway = factor(x.h$pathway, levels=x.h[order(x.h$NES), "pathway"])
 
+g1 = ggplot(x.c6, aes(x = NES, y =pathway, size=size)) +
+        geom_point()
+g1
+g2 = ggplot(x.h, aes(x = NES, y =pathway, size=size)) +
+        geom_point()
+g2
+
+pdf("dotplot_cd452neg_c6_fdr05.pdf")
+g1
+dev.off()
+pdf("dotplot_cd452neg_h_fdr05.pdf")
+g2
+dev.off()
+
+dim(x.c6)
+dim(x.h)
+
+x.c6[1,]
+
+    res = res[order(res$NES),]
+
+    df1 = merge(res, dpaths, by.x=1, by.y=2)
+
+    df1$pathway = factor(df1$pathway, levels=df1[order(df1$NES), "pathway"])
+    g = ggplot(df1, aes(x = NES, y =pathway, color=category)) +
+        geom_point(size=10)
