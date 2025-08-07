@@ -266,8 +266,9 @@ fp <- ggplot(data=cell.counts.res, aes(x=celltypes, y=odds.ratio, ymin=low95, ym
         geom_hline(yintercept=1, lty=2) +  # add a dotted line at x=1 after flip
         coord_flip() +  # flip coordinates (puts labels on y axis)
         xlab("celltype") + ylab("Fisher's Test of proportions odds ratio(95% CI)") +
+        scale_y_reverse() + 
         theme_bw()  # use a white background
-png("cellcounts_forest.png")
+pdf("cellcounts_forest_v2.pdf")
 print(fp)
 dev.off()
 
