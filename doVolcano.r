@@ -1,28 +1,42 @@
 library("EnhancedVolcano")
 
 
-x = read.csv("./de_all/clust_HSPC_controlVsWtc.csv")
-head(x)
 
+mygenes = c(
+    "Il1rap",
+    "Hspa8",
+    "Hspa5",
+    "Cd52",
+    "Junb",
+    "Itgb2",
+    "Lilr4b",
+    "Chka",
+    "Cxcr2",
+    "Gata3",
+    "Cd74"
+)
 
- #Dynll1, Dnaja1 and Hspa8 along with other top significant genes. 
+#load in the cd45.2+ hspc DE results
+x = read.csv("gseaClusters_cd452/clust_HSPC_controlVsWtc.csv")
+rownames(x) = x$X
 
-ix = which(x$X %in% c("Dynll1", "Dnaja1", "Hspa8"))
-
-
-plot(x$avg_log2FC, -log10(x$p_val_adj))
-
-
-g1 = EnhancedVolcano(x,
-    lab = x$X,
+pdf("volcano_cd452_hspc_4.pdf")
+EnhancedVolcano(x,
+    lab = rownames(x),
+    xlim = c(-2, 2),
+    ylim = c(0, 7),
+    pointSize=1,
+    FCcutoff = 0.4,
+    pCutoff = NA,
     x = 'avg_log2FC',
     y = 'p_val',
-    colAlpha = 1/5,
-    pCutoff = 0.0000268504697259559,
-    FCcutoff = 0.1,
-    boxedLabels=T,
-    drawConnectors=T)
-
-pdf("volc_hspc_ctrlVsWtc_v2.pdf")
-print(g1)
+    legendPosition = 'none',
+    selectLab = mygenes,
+    drawConnectors = TRUE,
+    labSize = 6.0,
+    labCol = 'black',
+    labFace = 'bold',
+    colConnectors = 'red',
+    boxedLabels = TRUE) + scale_x_reverse()
 dev.off()
+
