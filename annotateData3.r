@@ -98,7 +98,8 @@ p1 = ggplot(res.cd452, aes(x=avg_log2FC, y = celltypes, color=neglog10p, size=ce
         limits = c(0, b),  # or c(min_value, max_value) as needed
         oob = scales::squish  # ensures values beyond b still get red
     )+
-    xlim(-1., 1.) +
+    scale_x_reverse() +
+    xlim(1.,-1.) +
     ggtitle("CD45-2 ADT expression:  Control vs Wtc")
 p1
 
@@ -106,8 +107,7 @@ p2 = ggplot(res.cd452, aes(x=avg_log2FC, y = celltypes, color=p_val_adj<0.05, si
     geom_point() +
     ggtitle("CD45-2 ADT expression:  Control vs Wtc")
 
-png("de_cd45-2_controlVsWtc_v3.png")
-pdf("de_cd45-2_controlVsWtc_v3.pdf")
+pdf("de_cd45-2_controlVsWtc_v4.pdf")
 print(p1)
 dev.off()
 
