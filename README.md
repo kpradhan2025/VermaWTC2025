@@ -1,6 +1,7 @@
 The data analysis starts from the output of a cellranger processing pipeline.
 
 "tryEccite.r"
+
 The 4 samples were individually processed using standard Seurat procedures before being integrated together into a combined dataspace.  After integration, a umap was made from the top 30 PCs, and neighbors/clusters were formed based on a resolution of 0.5 resulting in 29 clusters.
 
 The Seurat datastructure can be loaded from the following link:
@@ -9,9 +10,11 @@ https://www.dropbox.com/scl/fi/et0dnoxdwdew7y91me7rt/x.combined.rdata?rlkey=mrii
 
 
 "annotateData.r"
+
 For each of these 29 clusters, we looked at which genes were most differentially expressed with regard to the remaining clusters.  These gene lists were used to help the manual identification of the clusters.  To aid this process, we also performed automatic cell type identification based on 6 distinct cell type libraries.  The automatic celltypes served as a starting point for the lengthy manual classification procedure.
 
 "annotateData3.r"
+
 Once manual cell type identification was performed, we merged clusters with similar labels resulting in a reduced set of 14 cell types.  
 The manual labelling of the X clusters is available from the following link:
 https://www.dropbox.com/scl/fi/jnd6zicmbt55fg0598n67/clusterCelltypes_20230810.xlsx?rlkey=oajlnx7x4exu8qlbhn4t5tepi&st=d62ln503&dl=0
